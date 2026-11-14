@@ -7,24 +7,24 @@
 class Agentry < Formula
   desc "Dependency manager for AI coding agents"
   homepage "https://github.com/OpenTechIL/agentry"
-  version "0.2.0"
+  version "0.3.0"
   license "MIT"
 
   on_macos do
     on_arm do
       url "https://github.com/OpenTechIL/agentry/releases/download/v#{version}/agentry-#{version}-macos-arm64"
-      sha256 "b69692575a4be7bfa7bf2530cc6d34d2600f1ee1e1f1c89ee9cdb4ca0fa7d93a"
+      sha256 "8793d64ac3409b57e484da2a473afe9ff062b334a540f7100888007baf15b037"
     end
     on_intel do
       url "https://github.com/OpenTechIL/agentry/releases/download/v#{version}/agentry-#{version}-macos-x86_64"
-      sha256 "5c906fbaa1eae51c8c2c7242ad5fbc88309d20ef9a962da4653b03a0d4ae889e"
+      sha256 "0289138206a7dbe7cb583c70d71ee7f5f45371b3ffd69a8ebbda4e4f504ffc73"
     end
   end
 
   on_linux do
     on_intel do
       url "https://github.com/OpenTechIL/agentry/releases/download/v#{version}/agentry-#{version}-linux-x86_64"
-      sha256 "1b903e95a0f849b3f8249fa10f92e9317286afafe1fae8ae6711f474163a3de2"
+      sha256 "65b16241ddc132a88dd88b3081849a04c3c8d6d8972e4cf068ec27b9e2dfe107"
     end
     # linux-arm64 has no prebuilt binary yet (see install.sh); use `uv tool install`.
   end
