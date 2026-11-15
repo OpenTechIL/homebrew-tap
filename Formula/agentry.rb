@@ -7,36 +7,41 @@
 class Agentry < Formula
   desc "Dependency manager for AI coding agents"
   homepage "https://github.com/OpenTechIL/agentry"
-  version "0.3.4"
+  version "0.3.5"
   license "MIT"
 
   on_macos do
     on_arm do
-      url "https://github.com/OpenTechIL/agentry/releases/download/v#{version}/agentry-#{version}-macos-arm64"
-      sha256 "e42ce654f9a0d5ba926bc6fe0c582b58a6ebe5aaa0b59467f9ff0a7710ea856c"
+      url "https://github.com/OpenTechIL/agentry/releases/download/v#{version}/agentry-#{version}-macos-arm64.tar.gz"
+      sha256 "2fe0da0883e7021203926fbd170aaabfe1d8d4c4dd559fb9bf92c974f067910c"
     end
     on_intel do
-      url "https://github.com/OpenTechIL/agentry/releases/download/v#{version}/agentry-#{version}-macos-x86_64"
-      sha256 "deed8d6423c2ee14aa678509359c9b81be35311ed8a2c8c5015042490a9bc3c7"
+      url "https://github.com/OpenTechIL/agentry/releases/download/v#{version}/agentry-#{version}-macos-x86_64.tar.gz"
+      sha256 "a541cacc46ebb7fd2c6eab5a397648f35693b39c33eba79742d96fd8afd5ab7c"
     end
   end
 
   on_linux do
     on_intel do
-      url "https://github.com/OpenTechIL/agentry/releases/download/v#{version}/agentry-#{version}-linux-x86_64"
-      sha256 "5de34b70c31abfc9619c068022c27c533493bd3be95cc41a195752e18abe8bb0"
+      url "https://github.com/OpenTechIL/agentry/releases/download/v#{version}/agentry-#{version}-linux-x86_64.tar.gz"
+      sha256 "73dc7452d142b2abe11c05e80aad18afee560fe9bf0148e282a2616dd3ffc0df"
     end
     # linux-arm64 has no prebuilt binary yet (see install.sh); use `uv tool install`.
   end
 
   def install
-    # The release asset is the bare binary, named agentry-<version>-<target>.
-    bin.install Dir["agentry-*"].first => "agentry"
+    # The release asset is a one-folder build: an agentry/ folder holding the `agentry`
+    # executable and its `_internal/` libraries. Homebrew unpacks it and enters agentry/,
+    # so the folder's contents go to libexec and bin/ only gets symlinks. The executable
+    # finds `_internal/` through the symlink. A one-folder build starts in ~0.2s, where
+    # the one-file build unpacked itself on every run (~5s on macOS).
+    libexec.install Dir["*"]
+    bin.install_symlink libexec/"agentry"
     # Short aliases. `agy` is kept for back-compat, but Google's Antigravity CLI also
     # claims that name — `agyx` is the short name that cannot collide. Homebrew prints its
     # own caveat when a linked binary is shadowed on PATH.
-    bin.install_symlink bin/"agentry" => "agy"
-    bin.install_symlink bin/"agentry" => "agyx"
+    bin.install_symlink libexec/"agentry" => "agy"
+    bin.install_symlink libexec/"agentry" => "agyx"
   end
 
   test do
